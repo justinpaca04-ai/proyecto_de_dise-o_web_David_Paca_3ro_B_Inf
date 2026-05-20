@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Baja de Equipos Dañados — HCPT Sistemas</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div id="pantalla-caratula">
+  <div class="caratula-header">
+    <div class="logo-circulo">
+      <img src="logoHGPT.png" alt="Logo HGPT" style="width:72px;height:72px;object-fit:contain;border-radius:50%;"/>
+    </div>
+    <div class="caratula-org">
+      <h1>H. CONSEJO PROVINCIAL DE TUNGURAHUA</h1>
+      <p>Dirección de Sistemas — Gestión de Activos Tecnológicos</p>
+    </div>
+  </div>
+
+  <div class="caratula-hero">
+    <div class="icono-central">
+      <svg width="58" height="58" viewBox="0 0 24 24" fill="none"
+           stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/>
+        <path d="M8 21h8M12 17v4"/>
+        <line x1="4" y1="1" x2="20" y2="17" stroke="#c0392b" stroke-width="2"/>
+      </svg>
+    </div>
+    <h2>Sistema de Baja<br/>de Equipos Dañados</h2>
+    <p>Plataforma oficial para el registro, seguimiento y control de equipos tecnológicos dados de baja por daño irreparable.</p>
+    <span class="departamento">Dirección de Sistemas</span>
+    <br/>
+    <button class="btn-ingresar" onclick="mostrar('login')">Ingresar al Sistema</button>
+  </div>
+
+  <div class="caratula-footer">
+    &copy; 2024 Honorable Consejo Provincial de Tungurahua &bull; Sistema Interno v1.0
+  </div>
+</div>
+
+<div id="pantalla-login">
+  <div class="login-card">
+    <div class="login-header">
+      <h3>Acceso al Sistema</h3>
+      <p>Ingrese su cédula y contraseña asignada</p>
+    </div>
+    <div class="login-body">
+      <div class="campo">
+        <label>Cédula de Identidad</label>
+        <input type="text" id="inp-cedula" maxlength="10" placeholder="Ej: 1801234567"/>
+      </div>
+      <div class="campo">
+        <label>Contraseña</label>
+        <input type="password" id="inp-contrasena" placeholder="••••••••"
+               onkeydown="if(event.key==='Enter')iniciarSesion()"/>
+      </div>
+      <div class="msg-error" id="msg-login-error"></div>
+      <button class="btn-login" onclick="iniciarSesion()">Ingresar</button>
+      <div class="login-back"><a onclick="mostrar('caratula')">← Volver al inicio</a></div>
+    </div>
+  </div>
+</div>
+
+<div id="pantalla-sistema">
+  <div class="topbar">
+    <div>
+    <div style="display:flex;align-items:center;gap:10px;">
+  <img src="logoHGPT.png" alt="Logo" style="width:36px;height:36px;object-fit:contain;border-radius:50%;background:white;padding:2px;"/>
+  <div>
+    <div class="topbar-marca">HCPT — Sistemas</div>
+    <div class="topbar-sub">Baja de Equipos Dañados</div>
+  </div>
+</div>
+    </div>
+    <div style="display:flex;align-items:center;">
+      <div class="usuario-badge" id="badge-usuario">—</div>
+      <button class="btn-salir" onclick="cerrarSesion()">Salir</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab activo" onclick="activarTab('registro')">➕ Registrar Baja</div>
+    <div class="tab" onclick="activarTab('listado')">📋 Listado de Bajas</div>
+    <div class="tab" onclick="activarTab('usuarios')">👥 Usuarios</div>
+    <div class="tab" onclick="activarTab('reportes')">📊 Reportes</div>
+  <div class="panel activo" id="tab-registro">
+    <div class="form-card">
+      <h3>Registrar Equipo Dañado para Baja</h3>
+      <p class="form-subtitulo">Complete todos los campos obligatorios (*). El registro queda enlazado a su cédula.</p>
+      <div class="form-grid">
+        <div class="form-grupo">
+          <label>Código de Inventario *</label>
+          <input type="text" id="f-codigo" placeholder="Ej: HCPT-PC-0142"/>
+        </div>
+        <div class="form-grupo">
+          <label>Tipo de Equipo *</label>
+          <select id="f-tipo">
+            <option value="">— Seleccione —</option>
+            <option>Computador de escritorio</option>
+            <option>Laptop / Portátil</option>
+            <option>Monitor</option>
+            <option>Impresora</option>
+            <option>Escáner</option>
+            <option>UPS / Regulador</option>
+            <option>Switch / Router</option>
+            <option>Servidor</option>
+            <option>Proyector</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-grupo">
+          <label>Marca *</label>
+          <input type="text" id="f-marca" placeholder="Ej: HP, Dell, Lenovo"/>
+        </div>
+        <div class="form-grupo">
+          <label>Modelo *</label>
+          <input type="text" id="f-modelo" placeholder="Ej: EliteDesk 800 G3"/>
+        </div>
+        <div class="form-grupo full">
+          <label>Número de Serie *</label>
+          <input type="text" id="f-serie" placeholder="Ej: MXL8240BKT"/>
+        </div>
+        <div class="form-grupo">
+          <label>Fecha de Baja *</label>
+          <input type="date" id="f-fecha"/>
+        </div>
+        <div class="form-grupo full">
+          <label>Descripción del Daño *</label>
+          <textarea id="f-dano" placeholder="Describa detalladamente el daño..."></textarea>
+        </div>
+        <div class="form-grupo full">
+          <label>Diagnóstico Técnico *</label>
+          <textarea id="f-diagnostico" placeholder="Diagnóstico técnico que sustenta la baja..."></textarea>
+        </div>
+        <div class="form-grupo full">
+          <label>Observaciones</label>
+          <textarea id="f-obs" placeholder="Información adicional (opcional)..."></textarea>
+        </div>
+      </div>
+      <div class="msg-exito" id="msg-guardado">✅ Equipo registrado correctamente.</div>
+      <div class="msg-form-error" id="msg-form-error"></div>
+      <div class="form-acciones">
+        <button class="btn-guardar" onclick="guardarEquipo()">Guardar Registro</button>
+        <button class="btn-limpiar" onclick="limpiarFormulario()">Limpiar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="tab-listado">
+    <div class="listado-header">
+      <h3>Equipos Registrados para Baja</h3>
+      <input class="buscador" type="search" placeholder="🔍 Buscar..."
+             oninput="filtrarTabla(this.value)"/>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Código Inventario</th>
+            <th>Tipo</th>
+            <th>Marca / Modelo</th>
+            <th>Responsable</th>
+            <th>Fecha Baja</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody-equipos">
+          <tr><td colspan="7" class="vacio">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="panel" id="tab-reportes">
+  <div class="form-card" style="max-width:700px;">
+    <h3>Generar Reporte de Equipos Dañados</h3>
+    <p class="form-subtitulo">Filtra por fecha, mes, tipo de equipo o estado y descarga en Excel o PDF.</p>
+    <div class="form-grid">
+      <div class="form-grupo">
+        <label>Fecha Inicio</label>
+        <input type="date" id="r-fecha-inicio"/>
+      </div>
+      <div class="form-grupo">
+        <label>Fecha Fin</label>
+        <input type="date" id="r-fecha-fin"/>
+      </div>
+      <div class="form-grupo">
+        <label>Mes</label>
+        <select id="r-mes">
+          <option value="">— Todos —</option>
+          <option value="1">Enero</option>
+          <option value="2">Febrero</option>
+          <option value="3">Marzo</option>
+          <option value="4">Abril</option>
+          <option value="5">Mayo</option>
+          <option value="6">Junio</option>
+          <option value="7">Julio</option>
+          <option value="8">Agosto</option>
+          <option value="9">Septiembre</option>
+          <option value="10">Octubre</option>
+          <option value="11">Noviembre</option>
+          <option value="12">Diciembre</option>
+        </select>
+      </div>
+      <div class="form-grupo">
+        <label>Año</label>
+        <select id="r-anio">
+          <option value="">— Todos —</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+        </select>
+      </div>
+      <div class="form-grupo">
+        <label>Tipo de Equipo</label>
+        <select id="r-tipo">
+          <option value="">— Todos —</option>
+          <option>Computador de escritorio</option>
+          <option>Laptop / Portátil</option>
+          <option>Monitor</option>
+          <option>Impresora</option>
+          <option>Escáner</option>
+          <option>UPS / Regulador</option>
+          <option>Switch / Router</option>
+          <option>Servidor</option>
+          <option>Proyector</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="form-grupo">
+        <label>Estado</label>
+        <select id="r-estado">
+          <option value="">— Todos —</option>
+          <option value="en_revision">En Revisión</option>
+          <option value="aprobado">Aprobado</option>
+          <option value="rechazado">Rechazado</option>
+          <option value="dado_de_baja">Dado de Baja</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:24px;">
+        <button class="btn-guardar" onclick="buscarReporte()">🔍 Buscar Equipos</button>
+      </div>
+      <div style="margin-top:24px;">
+        <p id="reporte-total" style="font-weight:600;color:var(--verde-oscuro);margin-bottom:12px;"></p>
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Tipo</th>
+                <th>Marca / Modelo</th>
+                <th>Serie</th>
+                <th>Responsable</th>
+                <th>Fecha Baja</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-reporte">
+              <tr><td colspan="7" class="vacio">Use los filtros y presione Buscar.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="form-acciones" id="reporte-acciones" style="display:none;margin-top:20px;">
+        <button class="btn-guardar" style="background:#1a5c2e;" onclick="descargarReporte('excel')">
+          📥 Descargar Excel
+        </button>
+        <button class="btn-guardar" style="background:#c0392b;" onclick="descargarReporte('pdf')">
+          📄 Descargar PDF
+        </button>
+      </div>
+    </div>
+</div>
+
+<div class="panel" id="tab-usuarios">
+  <div class="usuarios-grid">
+    <div class="usuarios-form-card">
+      <h3>Crear Nuevo Usuario</h3>
+      <p class="usuarios-subtitulo">Solo el administrador puede crear usuarios.</p>
+      <div class="form-grupo" style="margin-bottom:16px;">
+        <label>Cédula *</label>
+        <input type="text" id="u-cedula" maxlength="10" placeholder="Ej: 1801234567"/>
+      </div>
+      <div class="form-grupo" style="margin-bottom:16px;">
+        <label>Nombre completo *</label>
+        <input type="text" id="u-nombre" placeholder="Ej: Juan Pérez"/>
+      </div>
+      <div class="form-grupo" style="margin-bottom:16px;">
+        <label>Cargo *</label>
+        <input type="text" id="u-cargo" placeholder="Ej: Técnico de Sistemas"/>
+      </div>
+      <div class="form-grupo" style="margin-bottom:16px;">
+        <label>Contraseña *</label>
+        <input type="password" id="u-contrasena" placeholder="••••••••"/>
+      </div>
+      <div class="form-grupo" style="margin-bottom:20px;">
+        <label>Rol</label>
+        <select id="u-rol">
+          <option value="tecnico">Técnico</option>
+          <option value="admin">Administrador</option>
+        </select>
+      </div>
+      <div class="msg-exito" id="msg-usuario-ok"></div>
+      <div class="msg-form-error" id="msg-usuario-err"></div>
+      <button class="btn-guardar" onclick="crearUsuario()">Crear Usuario</button>
+    </div>
+    <div class="usuarios-lista-card">
+      <h3>Usuarios Registrados</h3>
+      <div id="lista-usuarios"><p class="vacio">Cargando...</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-estado">
+  <div class="modal">
+    <div class="modal-header">
+      <h4>Cambiar Estado — <span id="modal-estado-codigo"></span></h4>
+      <button class="btn-cerrar-modal" onclick="cerrarModalEstado()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:12px;font-size:.9rem;color:#5a5a5a;">Seleccione el nuevo estado del equipo:</p>
+      <div class="estado-opciones">
+        <button class="btn-estado en_revision"  onclick="cambiarEstado('en_revision')">🔄 En Revisión</button>
+        <button class="btn-estado aprobado"     onclick="cambiarEstado('aprobado')">✅ Aprobado</button>
+        <button class="btn-estado rechazado"    onclick="cambiarEstado('rechazado')">❌ Rechazado</button>
+        <button class="btn-estado dado_de_baja" onclick="cambiarEstado('dado_de_baja')">🗑️ Dado de Baja</button>
+      </div>
+      <label style="font-size:.78rem;font-weight:600;color:#5a5a5a;letter-spacing:.04em;text-transform:uppercase;">Motivo (opcional)</label>
+      <textarea class="motivo-area" id="motivo-estado" placeholder="Ingrese el motivo del cambio..."></textarea>
+      <div class="msg-exito"      id="msg-estado-ok"  style="margin-top:12px;"></div>
+      <div class="msg-form-error" id="msg-estado-err" style="margin-top:12px;"></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h4 id="modal-titulo">Detalle del Equipo</h4>
+      <button class="btn-cerrar-modal" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
