@@ -1,4 +1,4 @@
-const API = 'http://localhost:3000/api';
+const API = 'https://proyectodedise-owebdavidpaca3robinf-production.up.railway.app/api';
 let token = null;
 let datosEquipos = [];
 
